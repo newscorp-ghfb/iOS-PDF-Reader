@@ -37,12 +37,20 @@ internal final class PDFThumbnailCollectionViewController: UICollectionViewContr
     weak var delegate: PDFThumbnailControllerDelegate?
     
     /// Small thumbnail image representations of the pdf pages
-    private var pageImages: [UIImage]? {
+    private var pageImages: [UIImage]? = [] {
         didSet {
             collectionView?.reloadData()
         }
     }
     
+    public var thumbnailSelectedBorderColor: UIColor? = .red
+    
+    public var thumbnailCollectionBackgroundColor: UIColor? = .lightGray {
+        didSet {
+            self.collectionView.backgroundColor = thumbnailCollectionBackgroundColor
+        }
+    }
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.global(qos: .background).async {
@@ -62,7 +70,8 @@ internal final class PDFThumbnailCollectionViewController: UICollectionViewContr
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! PDFThumbnailCell
         
         cell.imageView?.image = pageImages?[indexPath.row]
-        cell.alpha = currentPageIndex == indexPath.row ? 1 : 0.2
+        cell.layer.borderColor = currentPageIndex == indexPath.row ? thumbnailSelectedBorderColor?.cgColor : UIColor.clear.cgColor
+        cell.layer.borderWidth = currentPageIndex == indexPath.row ? 4 : 0
         
         return cell
     }

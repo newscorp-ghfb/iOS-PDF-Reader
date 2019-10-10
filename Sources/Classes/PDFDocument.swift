@@ -126,7 +126,7 @@ public struct PDFDocument {
     /// - parameter callback: callback to execute when finished
     ///
     /// - returns: Image representation of the document page
-    func pdfPageImage(at pageNumber: Int, callback: (UIImage?) -> Void) {
+    public func pdfPageImage(at pageNumber: Int, callback: (UIImage?) -> Void) {
         if let image = images.object(forKey: NSNumber(value: pageNumber)) {
             callback(image)
         } else {
